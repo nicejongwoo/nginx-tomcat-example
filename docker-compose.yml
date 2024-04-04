@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  nginx:
+    image: nginx:latest
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf:ro
+    links:
+      - tomcat
+
+  tomcat:
+    image: tomcat:9-jdk8-openjdk
+    volumes:
+      - ./server.xml:/usr/local/tomcat/conf/server.xml:ro
+      - "./tomcat/webapps:/usr/local/tomcat/webapps"
+      - "./tomcat/logs:/usr/local/tomcat/logs"
+    ports:
+      - 8080:8080
